@@ -18,6 +18,6 @@
 #define CH7 0b11110110
 
 // Define a function to read data from a channel
-uint16_t read_adc(spi_inst_t *spi,uint8_t channel);
+uint16_t ads_read(spi_inst_t *spi,uint8_t channel);
 
 #endif
