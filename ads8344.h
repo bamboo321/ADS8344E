@@ -20,5 +20,6 @@
 // Define a function to read data from a channel
 uint16_t ads_read(spi_inst_t *spi, uint8_t channel);
 void ads_read_data_continues(spi_inst_t *spi, uint8_t *channels, uint16_t *data, uint32_t len);
+void ads_doual_read_data_continues(spi_inst_t *spi_first, spi_inst_t *spi_second, uint8_t *channels, uint16_t *data, uint32_t len);
 
 #endif

@@ -36,3 +36,24 @@ void ads_read_data_continues(spi_inst_t *spi, uint8_t *channels, uint16_t *data,
             ch_index = 1;
     }
 }
+
+void ads_doual_read_data_continues(spi_inst_t *spi_first, spi_inst_t *spi_second, uint8_t *channels, uint16_t *data, uint32_t len)
+{
+    uint32_t data_index = 0;
+    uint8_t ch_index = 0;
+    // uint8_t ch = channels[ch_index++];
+    spi_write_blocking(spi_first, &channels[ch_index++], 1);
+    spi_write_blocking(spi_second, &channels[ch_index++], 1);
+    while (len > data_index)
+    {
+        uint8_t d1[3];
+        uint8_t d2[3];
+        spi_write_read_blocking(spi_first, &channels[ch_index], d1, 3);
+        spi_write_read_blocking(spi_second, &channels[ch_index], d2, 3);
+        data[data_index++] = ((d1[0] << 16) | (d1[1] << 8) | d1[2]) >> 7;
+        data[data_index++] = ((d2[0] << 16) | (d2[1] << 8) | d2[2]) >> 7;
+        ch_index += 3;
+        if (ch_index >= 24)
+            ch_index = 1;
+    }
+}
