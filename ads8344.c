@@ -1,8 +1,11 @@
 #include "ads8344.h"
 
 // Define a function to read data from a channel
-uint16_t ads_read(spi_inst_t *spi, uint8_t channel)
+uint16_t ads_read(spi_inst_t *spi, uint8_t channel, uint gpio_cs)
 {
+    // Set the CS pin to low to start the SPI communication
+    gpio_put(gpio_cs, 0);
+
     // Select the channel by sending a command byte
     spi_write_blocking(spi, &channel, 1);
 
@@ -15,6 +18,9 @@ uint16_t ads_read(spi_inst_t *spi, uint8_t channel)
 
     // Combine the two bytes into a 16-bit value
     uint16_t value = ((data[0] << 16) | (data[1] << 8) | data[2]) >> 7;
+
+    // Set the CS pin to high to end the SPI communication
+    gpio_put(gpio_cs, 1);
 
     // Return the value
     return value;
