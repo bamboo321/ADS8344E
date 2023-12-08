@@ -10,7 +10,7 @@ uint16_t ads_read(spi_inst_t *spi, uint8_t channel, uint gpio_cs)
     spi_write_blocking(spi, &channel, 1);
 
     // Wait for the conversion to finish (about 8 us)
-    // sleep_us(8);
+    sleep_us(8);
 
     // Read two bytes of data from the ADC
     uint8_t data[3];
